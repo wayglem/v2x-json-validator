@@ -1,0 +1,28 @@
+{
+  "type": "cam",
+  "origin": "self",
+  "version": "0.0.1",
+  "source_uuid": "uuid14",
+  "timestamp": 1574778515424,
+  "message": {
+    "protocol_version": 42,
+    "station_id": 42,
+    "generation_delta": 42,
+    "basic_container": {
+      "station_type": 5,
+      "position": {
+        "latitude": 486263556,
+        "longitude": 22492123
+      }
+    },
+    "high_freq_container": {
+      "heading": 1639,
+      "speed": 365,
+      "longitudinal_acceleration": 0,
+      "yaw_rate": -6
+    },
+    "low_freq_container": {
+      "vehicle_role": 2
+    }
+  }
+}

@@ -1,0 +1,46 @@
+/*
+    responsive 
+*/
+.wrapper {
+    display: grid;
+    grid-template-areas: 'left-header right-header' 'left-editor right-editor';
+    column-gap: 5%;
+    row-gap: 15px;
+    grid-auto-rows: minmax(100px, auto);
+}
+
+.editor {
+    width: 100%;
+    height: 800px;
+}
+
+.left-editor {
+    grid-area: left-editor;
+}
+
+.right-editor {
+    grid-area: right-editor;
+}
+
+.left-editor-header {
+    grid-area: left-header;
+}
+
+.right-editor-header {
+    grid-area: right-header;
+}
+
+.schema-button {
+    float: right;
+}
+
+.error-message {
+    color: red;
+}
+
+@media (max-width: 768px) {
+    /* For mobile phones: */
+    .wrapper {
+        grid-template-areas: 'left-header' 'left-editor' 'right-header' 'right-editor';
+    }
+}

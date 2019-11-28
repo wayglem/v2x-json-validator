@@ -1,0 +1,88 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <!-- when using the mode "code", it's important to specify charset utf-8 -->
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+
+    <link href="node_modules/jsoneditor/dist/jsoneditor.min.css" rel="stylesheet" type="text/css">
+    <link href="./style.css" rel="stylesheet" type="text/css">
+    <script src="node_modules/jsoneditor/dist/jsoneditor.min.js"></script>
+    <script type="text/javascript" src="./utils.js"></script>
+    <script src="./cam_schema.js"></script>
+    <script src="./denm_schema.js"></script>
+</head>
+<body>
+<h1>V2X messages JSON validator</h1>
+<div class="wrapper">
+    <div class="left-editor-header">
+        <H2>CAM</H2>
+        <select id="select-cam">
+            <option>basic_cam.json</option>
+        </select>
+        <button type="submit" onclick="loadSample('CAM')">Ok</button>
+        <a href="cam_schema.js" target="_blank">
+            <button type="button" class="schema-button"> show schema</button>
+        </a>
+        <div id="cam-error" class="error-message"></div>
+    </div>
+    <div class="right-editor-header">
+        <H2>DENM</H2>
+        <select id="select-denm">
+            <option>basic_denm.json</option>
+        </select>
+        <button type="submit" onclick="loadSample('DENM')">Ok</button>
+        <a href="cam_schema.js" target="_blank">
+            <button type="button" class="schema-button"> show schema</button>
+        </a>
+        <div id="denm-error" class="error-message"></div>
+    </div>
+    <div id="camJsonEditor" class="editor left-editor"></div>
+    <div id="denmJsonEditor" class="editor right-editor"></div>
+</div>
+<script>
+    const camErrorDiv = document.getElementById("cam-error");
+    const denmErrorDiv = document.getElementById("denm-error");
+
+    const camContainer = document.getElementById("camJsonEditor");
+    const camOptions = {mode: 'code', schema: camSchema};
+    const camEditor = new JSONEditor(camContainer, camOptions);
+
+    const denmContainer = document.getElementById("denmJsonEditor");
+    const denmOptions = {mode: 'code', schema: denmSchema};
+    const denmEditor = new JSONEditor(denmContainer, denmOptions);
+
+    function loadSample(messageType) {
+        if (!messageType) {
+            return console.error('error loading sample. You should specify a messageType cam or denm');
+        } else if (messageType.toUpperCase() === "DENM") {
+            let e = document.getElementById("select-denm");
+            let fileName = e.options[e.selectedIndex].text;
+            let url = './denm_examples/' + fileName;
+            loadFileIntoEditor(url, denmEditor, denmErrorDiv);
+        } else if (messageType.toUpperCase() === "CAM") {
+            const e = document.getElementById("select-cam");
+            const fileName = e.options[e.selectedIndex].text;
+            const url = './cam_examples/' + fileName;
+            loadFileIntoEditor(url, camEditor, camErrorDiv);
+        } else {
+            console.error('error loading sample. MessageType must be cam or denm');
+        }
+    }
+
+    function loadFileIntoEditor(url, editor, errorDiv) {
+        utils.makeRequest('GET', url)
+            .then(function (response) {
+                editor.set(JSON.parse(response));
+                errorDiv.style.display = 'none';
+                errorDiv.value = "";
+            })
+            .catch(function (err) {
+                const error = 'Error loading file ' + url + '! ' + err.statusText;
+                console.error(error);
+                errorDiv.innerHTML = error;
+                errorDiv.style.display = 'block';
+            });
+    }
+</script>
+</body>
+</html>
