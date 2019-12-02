@@ -1,15 +1,11 @@
 {
   "name": "json_validator",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "validate json DENM, CAM",
   "main": "index.js",
   "dependencies": {
     "jsoneditor": "^7.2.1"
   },
-  "devDependencies": {},
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "",
-  "license": "ISC"
+  "author": "Elias Salam <elias.salam@orange.com>",
+  "license": "Apache-2.0"
 }
