@@ -38,6 +38,12 @@
     color: red;
 }
 
+#changelog {
+    position: absolute;
+    color: steelblue;
+    right: 0;
+}
+
 @media (max-width: 768px) {
     /* For mobile phones: */
     .wrapper {

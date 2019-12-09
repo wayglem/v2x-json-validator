@@ -1,0 +1,60 @@
+{
+  "type": "denm",
+  "origin": "self",
+  "version": "0.0.1",
+  "source_uuid": "uuid14",
+  "timestamp": 1574778515425,
+  "message": {
+    "protocol_version": 1,
+    "station_id": 42,
+    "management_container": {
+      "action_id": {
+        "origin_station_id": 42,
+        "sequence_number": 1
+      },
+      "detection_time": 186244115423,
+      "reference_time": 186244115424,
+      "termination": 0,
+      "event_position": {
+        "latitude": 486263556,
+        "longitude": 22492123,
+        "altitude": 1340,
+        "accuracy": {
+          "semi_major_confidence": 1000,
+          "semi_minor_confidence": 100,
+          "semi_major_orientation": 800,
+          "altitude": 5
+        }
+      },
+      "relevant_distance": 2,
+      "relevance_traffic_direction": 1,
+      "validity_duration": 180,
+      "transmission_interval": 1000,
+      "station_type": 5
+    },
+    "situation_container": {
+      "information_quality": 4,
+      "event_type": {
+        "cause": 1,
+        "subcause": 6
+      },
+      "linked_cause": {
+        "cause": 94,
+        "subcause": 2
+      }
+    },
+    "location_container": {
+      "event_speed": 1000,
+      "event_position_heading": 3500,
+      "road_type": 0,
+      "accuracy": {
+        "event_speed": 10,
+        "event_position_heading": 10
+      }
+    },
+    "alacarte_container": {
+      "lane_position": 2,
+      "position_solution_type": 3
+    }
+  }
+}
