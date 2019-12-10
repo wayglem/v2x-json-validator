@@ -1,0 +1,54 @@
+{
+  "type": "cam",
+  "origin": "self",
+  "version": "0.1.0",
+  "source_uuid": "uuid14",
+  "timestamp": 1574778515424,
+  "message": {
+    "protocol_version": 42,
+    "station_id": 42,
+    "generation_delta": 42,
+    "basic_container": {
+      "station_type": 5,
+      "position": {
+        "latitude": 486263556,
+        "longitude": 22492123,
+        "altitude": 15000,
+        "accuracy": {
+          "semi_major_confidence": 1000,
+          "semi_minor_confidence": 100,
+          "semi_major_orientation": 800,
+          "altitude": 5
+        }
+      }
+    },
+    "high_freq_container": {
+      "heading": 1639,
+      "speed": 365,
+      "longitudinal_acceleration": 0,
+      "yaw_rate": -6,
+      "drive_direction": 0,
+      "vehicle_length": 45,
+      "vehicle_width": 17,
+      "curvature": 1,
+      "curvature_calculation_mode": 0,
+      "acceleration_control": "0011000",
+      "lane_position": 2,
+      "lateral_acceleration": 1,
+      "vertical_acceleration":-1,
+      "accuracy": {
+        "heading": 15,
+        "speed": 12,
+        "yaw_rate": 2,
+        "longitudinal_acceleration": 16,
+        "vehicle_length": 3,
+        "curvature": 0,
+        "vertical_acceleration": 5,
+        "lateral_acceleration": 0
+      }
+    },
+    "low_freq_container": {
+      "vehicle_role": 2
+    }
+  }
+}

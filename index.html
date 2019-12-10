@@ -13,11 +13,13 @@
 </head>
 <body>
 <h1>V2X messages JSON validator</h1>
+<a href="changelog.html" id="changelog">changelog</a>
 <div class="wrapper">
     <div class="left-editor-header">
         <H2>CAM</H2>
         <select id="select-cam">
             <option>basic_cam.json</option>
+            <option>full_cam.json</option>
         </select>
         <button type="submit" onclick="loadSample('CAM')">Ok</button>
         <a href="cam_schema.js" target="_blank">
@@ -29,9 +31,10 @@
         <H2>DENM</H2>
         <select id="select-denm">
             <option>basic_denm.json</option>
+            <option>full_denm.json</option>
         </select>
         <button type="submit" onclick="loadSample('DENM')">Ok</button>
-        <a href="cam_schema.js" target="_blank">
+        <a href="denm_schema.js" target="_blank">
             <button type="button" class="schema-button"> show schema</button>
         </a>
         <div id="denm-error" class="error-message"></div>
