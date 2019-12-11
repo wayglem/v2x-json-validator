@@ -14,7 +14,7 @@
         "latitude": 486263556,
         "longitude": 22492123,
         "altitude": 15000,
-        "accuracy": {
+        "confidence": {
           "semi_major_confidence": 1000,
           "semi_minor_confidence": 100,
           "semi_major_orientation": 800,
@@ -22,7 +22,7 @@
         }
       }
     },
-    "high_freq_container": {
+    "high_frequency_container": {
       "heading": 1639,
       "speed": 365,
       "longitudinal_acceleration": 0,
@@ -36,7 +36,7 @@
       "lane_position": 2,
       "lateral_acceleration": 1,
       "vertical_acceleration":-1,
-      "accuracy": {
+      "confidence": {
         "heading": 15,
         "speed": 12,
         "yaw_rate": 2,
@@ -47,7 +47,7 @@
         "lateral_acceleration": 0
       }
     },
-    "low_freq_container": {
+    "low_frequency_container": {
       "vehicle_role": 2
     }
   }

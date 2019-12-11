@@ -45,8 +45,8 @@ camSchema =
                     "station_id",
                     "generation_delta",
                     "basic_container",
-                    "high_freq_container",
-                    "low_freq_container"
+                    "high_frequency_container",
+                    "low_frequency_container"
                 ],
                 "properties": {
                     "protocol_version": {
@@ -100,7 +100,7 @@ camSchema =
                                         "minimum": -100000,
                                         "maximum": 800001
                                     },
-                                    "accuracy": {
+                                    "confidence": {
                                         "type": "object",
                                         "properties": {
                                             "semi_major_confidence": {
@@ -133,7 +133,7 @@ camSchema =
                             }
                         }
                     },
-                    "high_freq_container": {
+                    "high_frequency_container": {
                         "type": "object",
                         "required": ["heading", "speed", "longitudinal_acceleration", "yaw_rate"],
                         "properties": {
@@ -214,7 +214,7 @@ camSchema =
                                 "minimum": -160,
                                 "maximum": 161
                             },
-                            "accuracy": {
+                            "confidence": {
                                 "type": "object",
                                 "properties": {
                                     "heading": {
@@ -269,7 +269,7 @@ camSchema =
                             }
                         }
                     },
-                    "low_freq_container": {
+                    "low_frequency_container": {
                         "type": "object",
                         "required": ["vehicle_role"],
                         "properties": {

@@ -137,7 +137,7 @@ const denmSchema =
                                         "minimum": -100000,
                                         "maximum": 800001
                                     },
-                                    "accuracy": {
+                                    "confidence": {
                                         "type": "object",
                                         "properties": {
                                             "semi_major_confidence": {
@@ -267,7 +267,7 @@ const denmSchema =
                                 "minimum": 0,
                                 "maximum": 3
                             },
-                            "accuracy": {
+                            "confidence": {
                                 "type": "object",
                                 "properties": {
                                     "event_speed": {
