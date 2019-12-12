@@ -12,8 +12,8 @@
         "origin_station_id": 42,
         "sequence_number": 1
       },
-      "detection_time": 186244115423,
-      "reference_time": 186244115424,
+      "detection_time": 503253332000,
+      "reference_time": 503253330000,
       "termination": 0,
       "event_position": {
         "latitude": 486263556,

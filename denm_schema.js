@@ -99,14 +99,14 @@ const denmSchema =
                             "detection_time": {
                                 "type": "integer",
                                 "description": "Unit: millisecond since ETSI epoch (2004/01/01). Time at which the event is detected by the originating ITS-S. For the DENM repetition, this DE shall remain unchanged.",
-                                "minimum": 126230400000,
-                                "maximum": 441763200000
+                                "minimum": 473428800000,
+                                "maximum": 1136073600000
                             },
                             "reference_time": {
                                 "type": "integer",
                                 "description": "Unit: millisecond since ETSI epoch (2004/01/01). Time at which a new DENM, an update DENM or a cancellation DENM is generated.",
-                                "minimum": 126230400000,
-                                "maximum": 441763200000
+                                "minimum": 473428800000,
+                                "maximum": 1136073600000
                             },
                             "termination": {
                                 "type": "integer",
