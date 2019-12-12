@@ -278,6 +278,11 @@ camSchema =
                                 "minimum": 0,
                                 "maximum": 15,
                                 "description": "default(0), publicTransport(1), specialTransport(2), dangerousGoods(3), roadWork(4), rescue(5), emergency(6), safetyCar(7), agriculture(8),commercial(9),military(10),roadOperator(11),taxi(12), reserved1(13), reserved2(14), reserved3(15)"
+                            },
+                            "exterior_lights": {
+                                "type": "string",
+                                "description": "Status of the exterior light switches represented as a bit string. lowBeamHeadlightsOn (0), highBeamHeadlightsOn (1), leftTurnSignalOn (2), rightTurnSignalOn (3), daytimeRunningLightsOn (4), reverseLightOn (5), fogLightOn (6), parkingLightsOn (7)",
+                                "example": ["00000000", "11111111", "0000011"]
                             }
                         }
                     }

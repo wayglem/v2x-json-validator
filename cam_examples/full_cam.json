@@ -48,7 +48,8 @@
       }
     },
     "low_frequency_container": {
-      "vehicle_role": 2
+      "vehicle_role": 2,
+      "exterior_lights": "00000000"
     }
   }
 }
