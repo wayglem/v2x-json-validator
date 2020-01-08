@@ -1,7 +1,7 @@
 {
   "type": "denm",
   "origin": "self",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "source_uuid": "uuid14",
   "timestamp": 1574778515425,
   "message": {
@@ -16,14 +16,17 @@
       "reference_time": 503253330000,
       "event_position": {
         "latitude": 486263556,
-        "longitude": 22492123
+        "longitude": 224921234,
+        "altitude": 20000
       },
-      "station_type": 5
-    },
-    "situation_container": {
-      "event_type": {
-        "cause": 94,
-        "subcause": 2
+      "station_type": 5,
+      "confidence": {
+        "position_confidence_ellipse":{
+          "semi_major_confidence":  100,
+          "semi_minor_confidence":  50,
+          "semi_major_orientation": 180
+        },
+        "altitude": 3
       }
     }
   }

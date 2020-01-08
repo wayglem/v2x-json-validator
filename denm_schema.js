@@ -1,14 +1,15 @@
-const denmSchema =
+denmSchema =
     {
-        "type": "object",
         "$id": "#denm",
+        // "$schema": "https://json-schema.org/draft/2019-09/schema",
+        "type": "object",
         "required": [
             "type",
             "origin",
             "version",
             "source_uuid",
             "timestamp",
-            "message"
+            "message",
         ],
         "properties": {
             "type": {
@@ -18,16 +19,21 @@ const denmSchema =
                 "type": "string",
                 "enum": [
                     "self",
-                    "mec_app",
-                    "onbaord-sensor",
-                    "backend"
+                    "global_application",
+                    "mec_application",
+                    "on_board_application",
                 ],
                 "description": "the entity responsible for this message"
             },
             "version": {
                 "type": "string",
-                "examples": ["0.1.0", "1.0.0"],
-                "description": "json message format version"
+                "description": "json message format version",
+                "default": "0.2.0",
+                "examples": [
+                    "0.1.0",
+                    "0.2.0",
+                    "1.0.0",
+                ]
             },
             "source_uuid": {
                 "type": "string",
@@ -50,7 +56,6 @@ const denmSchema =
                     "protocol_version",
                     "station_id",
                     "management_container",
-                    "situation_container"
                 ],
                 "properties": {
                     "protocol_version": {
@@ -72,13 +77,14 @@ const denmSchema =
                             "detection_time",
                             "reference_time",
                             "event_position",
-                            "station_type"
+                            "station_type",
+                            "confidence"
                         ],
                         "properties": {
                             "action_id": {
                                 "type": "object",
                                 "required": [
-                                    "origin_station_id", 
+                                    "origin_station_id",
                                     "sequence_number"
                                 ],
                                 "properties": {
@@ -116,18 +122,21 @@ const denmSchema =
                             },
                             "event_position": {
                                 "type": "object",
-                                "description": "Geographical position of the detected event.",
-                                "required": ["latitude", "longitude"],
+                                "required": [
+                                    "latitude",
+                                    "longitude",
+                                    "altitude",
+                                ],
                                 "properties": {
                                     "latitude": {
                                         "type": "integer",
-                                        "description": "latitude in microdegrees",
+                                        "description": "Unit: 0,1 microdegree. oneMicrodegreeNorth (10), oneMicrodegreeSouth (-10), unavailable(900000001)",
                                         "minimum": -900000000,
                                         "maximum": 900000001
                                     },
                                     "longitude": {
                                         "type": "integer",
-                                        "description": "longitude in microdegrees",
+                                        "description": "Unit: 0,1 microdegree. oneMicrodegreeEast (10), oneMicrodegreeWest (-10), unavailable(1800000001)",
                                         "minimum": -1800000000,
                                         "maximum": 1800000001
                                     },
@@ -137,38 +146,9 @@ const denmSchema =
                                         "minimum": -100000,
                                         "maximum": 800001
                                     },
-                                    "confidence": {
-                                        "type": "object",
-                                        "properties": {
-                                            "semi_major_confidence": {
-                                                "type": "integer",
-                                                "description": "Unit: cm. oneCentimeter(1), outOfRange(4094), unavailable(4095)",
-                                                "minimum": 0,
-                                                "maximum": 4095
-                                            },
-                                            "semi_minor_confidence": {
-                                                "type": "integer",
-                                                "description": "Unit: cm. oneCentimeter(1), outOfRange(4094), unavailable(4095)",
-                                                "minimum": 0,
-                                                "maximum": 4095
-                                            },
-                                            "semi_major_orientation": {
-                                                "type": "integer",
-                                                "description": "Unit 0.1 degree. wgs84North(0), wgs84East(900), wgs84South(1800), wgs84West(2700), unavailable(3601)",
-                                                "minimum": 0,
-                                                "maximum": 3601
-                                            },
-                                            "altitude": {
-                                                "type": "integer",
-                                                "description": "Absolute accuracy of a reported altitude value of a geographical point for a predefined confidence level (e.g. 95 %).",
-                                                "minimum": 0,
-                                                "maximum": 15
-                                            }
-                                        }
-                                    }
-                                }
+                                },
                             },
-                            "relevant_distance": {
+                            "relevance_distance": {
                                 "type": "integer",
                                 "description": "lessThan50m(0), lessThan100m(1), lessThan200m(2), lessThan500m(3), lessThan1000m(4), lessThan5km(5), lessThan10km(6), over10km(7)",
                                 "minimum": 0,
@@ -184,7 +164,8 @@ const denmSchema =
                                 "type": "integer",
                                 "description": "Unit: second. timeOfDetection(0), oneSecondAfterDetection(1)",
                                 "minimum": 0,
-                                "maximum": 86400
+                                "maximum": 86400,
+                                "default": 600,
                             },
                             "transmission_interval": {
                                 "type": "integer",
@@ -197,12 +178,58 @@ const denmSchema =
                                 "type": "integer",
                                 "minimum": 0,
                                 "maximum": 255
-                            }
-                        }
+                            },
+                            "confidence": {
+                                "type": "object",
+                                "required": [
+                                    "position_confidence_ellipse",
+                                    "altitude",
+                                ],
+                                "properties": {
+                                    "position_confidence_ellipse": {
+                                        "type": "object",
+                                        "required": [
+                                            "semi_major_confidence",
+                                            "semi_minor_confidence",
+                                            "semi_major_orientation",
+                                        ],
+                                        "properties": {
+                                            "semi_major_confidence": {
+                                                "type": "integer",
+                                                "description": "oneCentimeter(1), outOfRange(4094), unavailable(4095)",
+                                                "minimum": 0,
+                                                "maximum": 4095
+                                            },
+                                            "semi_minor_confidence": {
+                                                "type": "integer",
+                                                "description": "oneCentimeter(1), outOfRange(4094), unavailable(4095)",
+                                                "minimum": 0,
+                                                "maximum": 4095
+                                            },
+                                            "semi_major_orientation": {
+                                                "type": "integer",
+                                                "description": "wgs84North(0), wgs84East(900), wgs84South(1800), wgs84West(2700), unavailable(3601)",
+                                                "minimum": 0,
+                                                "maximum": 3601
+                                            },
+                                        }
+                                    },
+                                    "altitude": {
+                                        "type": "integer",
+                                        "description": "alt-000-01 (0), alt-000-02 (1), alt-000-05 (2), alt-000-10 (3), alt-000-20 (4), alt-000-50 (5), alt-001-00 (6), alt-002-00 (7), alt-005-00 (8), alt-010-00 (9), alt-020-00 (10), alt-050-00 (11), alt-100-00 (12), alt-200-00 (13), outOfRange (14), unavailable (15)",
+                                        "minimum": 0,
+                                        "maximum": 15,
+                                    }
+                                }
+                            },
+                        },
                     },
                     "situation_container": {
                         "type": "object",
-                        "required": ["event_type"],
+                        "required": [
+                            "information_quality",
+                            "event_type",
+                        ],
                         "properties": {
                             "information_quality": {
                                 "type": "integer",
@@ -212,16 +239,67 @@ const denmSchema =
                             },
                             "event_type": {
                                 "type": "object",
-                                "required": ["cause", "subcause"],
+                                "required": [
+                                    "cause",
+                                    "subcause",],
                                 "properties": {
                                     "cause": {
                                         "type": "integer",
-                                        "description": "reserved (0), trafficCondition (1), accident (2), roadworks (3), impassability (5), adverseWeatherCondition-Adhesion (6), aquaplannning (7), hazardousLocation-SurfaceCondition (9), hazardousLocation-ObstacleOnTheRoad (10), hazardousLocation-AnimalOnTheRoad (11), humanPresenceOnTheRoad (12), wrongWayDriving (14), rescueAndRecoveryWorkInProgress (15), adverseWeatherCondition-ExtremeWeatherCondition (17), adverseWeatherCondition-Visibility (18), adverseWeatherCondition-Precipitation (19), slowVehicle (26), dangerousEndOfQueue (27), vehicleBreakdown (91), postCrash (92), humanProblem (93), stationaryVehicle (94), emergencyVehicleApproaching (95), hazardousLocation-DangerousCurve (96), collisionRisk (97), signalViolation (98), dangerousSituation (99)",
+                                        "description": "reserved (0), " +
+                                            "trafficCondition (1), " +
+                                            "accident (2), " +
+                                            "roadworks (3), " +
+                                            "adverseWeatherCondition-Adhesion (6), " +
+                                            "hazardousLocation-SurfaceCondition (9), " +
+                                            "hazardousLocation-ObstacleOnTheRoad (10), " +
+                                            "hazardousLocation-AnimalOnTheRoad (11), " +
+                                            "humanPresenceOnTheRoad (12), " +
+                                            "wrongWayDriving (14), " +
+                                            "rescueAndRecoveryWorkInProgress (15), " +
+                                            "adverseWeatherCondition-ExtremeWeatherCondition (17), " +
+                                            "adverseWeatherCondition-Visibility (18), " +
+                                            "adverseWeatherCondition-Precipitation (19), " +
+                                            "slowVehicle (26), " +
+                                            "dangerousEndOfQueue (27), " +
+                                            "vehicleBreakdown (91), " +
+                                            "postCrash (92), " +
+                                            "humanProblem (93), " +
+                                            "stationaryVehicle (94), " +
+                                            "emergencyVehicleApproaching (95), " +
+                                            "hazardousLocation-DangerousCurve (96), " +
+                                            "collisionRisk (97), " +
+                                            "signalViolation (98), " +
+                                            "dangerousSituation (99)",
                                         "minimum": 0,
                                         "maximum": 255
                                     },
                                     "subcause": {
                                         "type": "integer",
+                                        "description":
+                                            "trafficCondition: unavailable(0), increasedVolumeOfTraffic(1), trafficJamSlowlyIncreasing(2), trafficJamIncreasing(3), trafficJamStronglyIncreasing(4), trafficStationary(5), trafficJamSlightlyDecreasing(6), trafficJamDecreasing(7), trafficJamStronglyDecreasing(8)" +
+                                            "accident: unavailable(0), multiVehicleAccident(1), heavyAccident(2), accidentInvolvingLorry(3), accidentInvolvingBus(4), accidentInvolvingHazardousMaterials(5), accidentOnOppositeLane(6), unsecuredAccident(7), assistanceRequested(8)" +
+                                            "roadworks: unavailable(0), majorRoadworks(1), roadMarkingWork(2), slowMovingRoadMaintenance(3), shortTermStationaryRoadworks(4), streetCleaning(5), winterService(6)" +
+                                            "humanPresenceOnTheRoad: unavailable(0), childrenOnRoadway(1), cyclistOnRoadway(2), motorcyclistOnRoadway(3)" +
+                                            "wrongWayDriving: unavailable(0), wrongLane(1), wrongDirection(2)" +
+                                            "adverseWeatherCondition-ExtremeWeatherCondition: unavailable(0), strongWinds(1), damagingHail(2), hurricane(3), thunderstorm(4), tornado(5), blizzard(6)" +
+                                            "adverseWeatherCondition-Adhesion: unavailable(0), heavyFrostOnRoad(1), fuelOnRoad(2), mudOnRoad(3), snowOnRoad(4), iceOnRoad(5), blackIceOnRoad(6), oilOnRoad(7), looseChippings(8), instantBlackIce(9), roadsSalted(10)" +
+                                            "adverseWeatherCondition-Visibility: unavailable(0), fog(1), smoke(2), heavySnowfall(3), heavyRain(4), heavyHail(5), lowSunGlare(6), sandstorms(7), swarmsOfInsects(8)" +
+                                            "adverseWeatherCondition-Precipitation: unavailable(0), heavyRain(1), heavySnowfall(2), softHail(3)" +
+                                            "slowVehicle: unavailable(0), maintenanceVehicle(1), vehiclesSlowingToLookAtAccident(2), abnormalLoad(3), abnormalWideLoad(4), convoy(5), snowplough(6), deicing(7), saltingVehicles(8)" +
+                                            "stationaryVehicle: unavailable(0), humanProblem(1), vehicleBreakdown(2), postCrash(3), publicTransportStop(4), carryingDangerousGoods(5)" +
+                                            "humanProblem: unavailable(0), glycemiaProblem(1), heartProblem(2)" +
+                                            "emergencyVehicleApproaching: unavailable(0), emergencyVehicleApproaching(1), prioritizedVehicleApproaching(2)" +
+                                            "hazardousLocation-DangerousCurve: unavailable(0), dangerousLeftTurnCurve(1), dangerousRightTurnCurve(2), multipleCurvesStartingWithUnknownTurningDirection(3), multipleCurvesStartingWithLeftTurn(4), multipleCurvesStartingWithRightTurn(5)" +
+                                            "hazardousLocation-SurfaceCondition: unavailable(0), rockfalls(1), earthquakeDamage(2), sewerCollapse(3), subsidence(4), snowDrifts(5), stormDamage(6), burstPipe(7), volcanoEruption(8), fallingIce(9)" +
+                                            "hazardousLocation-ObstacleOnTheRoad: unavailable(0), shedLoad(1), partsOfVehicles(2), partsOfTyres(3), bigObjects(4), fallenTrees(5), hubCaps(6), waitingVehicles(7)" +
+                                            "HazardousLocation-AnimalOnTheRoad: unavailable(0), wildAnimals(1), herdOfAnimals(2), smallAnimals(3), largeAnimals(4)" +
+                                            "CollisionRisk: unavailable(0), longitudinalCollisionRisk(1), crossingCollisionRisk(2), lateralCollisionRisk(3), vulnerableRoadUser(4)" +
+                                            "SignalViolation: unavailable(0), stopSignViolation(1), trafficLightViolation(2), turningRegulationViolation(3)" +
+                                            "RescueAndRecoveryWorkInProgress: unavailable(0), emergencyVehicles(1), rescueHelicopterLanding(2), policeActivityOngoing(3), medicalEmergencyOngoing(4), childAbductionInProgress(5)" +
+                                            "DangerousEndOfQueue: unavailable(0), suddenEndOfQueue(1), queueOverHill(2), queueAroundBend(3), queueInTunnel(4)" +
+                                            "DangerousSituation: unavailable(0), emergencyElectronicBrakeEngaged(1), preCrashSystemEngaged(2), espEngaged(3), absEngaged(4), aebEngaged(5), brakeWarningEngaged(6), collisionRiskWarningEngaged(7)" +
+                                            "VehicleBreakdown: unavailable(0), lackOfFuel (1), lackOfBatteryPower (2), engineProblem(3), transmissionProblem(4), engineCoolingProblem(5), brakingSystemProblem(6), steeringProblem(7), tyrePuncture(8)" +
+                                            "PostCrash: unavailable(0), accidentWithoutECallTriggered (1), accidentWithECallManuallyTriggered (2), accidentWithECallAutomaticallyTriggered (3), accidentWithECallTriggeredWithoutAccessToCellularNetwork(4)",
                                         "minimum": 0,
                                         "maximum": 255
                                     }
@@ -229,16 +307,20 @@ const denmSchema =
                             },
                             "linked_cause": {
                                 "type": "object",
-                                "required": ["cause", "subcause"],
+                                "required": [
+                                    "cause",
+                                    "subcause",
+                                ],
                                 "properties": {
                                     "cause": {
                                         "type": "integer",
-                                        "description": "reserved (0), trafficCondition (1), accident (2), roadworks (3), impassability (5), adverseWeatherCondition-Adhesion (6), aquaplannning (7), hazardousLocation-SurfaceCondition (9), hazardousLocation-ObstacleOnTheRoad (10), hazardousLocation-AnimalOnTheRoad (11), humanPresenceOnTheRoad (12), wrongWayDriving (14), rescueAndRecoveryWorkInProgress (15), adverseWeatherCondition-ExtremeWeatherCondition (17), adverseWeatherCondition-Visibility (18), adverseWeatherCondition-Precipitation (19), slowVehicle (26), dangerousEndOfQueue (27), vehicleBreakdown (91), postCrash (92), humanProblem (93), stationaryVehicle (94), emergencyVehicleApproaching (95), hazardousLocation-DangerousCurve (96), collisionRisk (97), signalViolation (98), dangerousSituation (99)",
+                                        "description": "see the event type cause description",
                                         "minimum": 0,
                                         "maximum": 255
                                     },
                                     "subcause": {
                                         "type": "integer",
+                                        "description": "see the event type subcause description",
                                         "minimum": 0,
                                         "maximum": 255
                                     }
@@ -248,6 +330,9 @@ const denmSchema =
                     },
                     "location_container": {
                         "type": "object",
+                        "required": [
+                            "traces",
+                        ],
                         "properties": {
                             "event_speed": {
                                 "type": "integer",
@@ -259,7 +344,55 @@ const denmSchema =
                                 "type": "integer",
                                 "description": "Unit: 0,1 degree. wgs84North(0), wgs84East(900), wgs84South(1800), wgs84West(2700), unavailable(3601)",
                                 "minimum": 0,
-                                "maximum": 3601
+                                "maximum": 3601,
+                            },
+                            "traces": {
+                                "type": "array",
+                                "items": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "required": [
+                                            "path_position",
+                                        ],
+                                        "properties": {
+                                            "path_position": {
+                                                "type": "object",
+                                                "required": [
+                                                    "delta_latitude",
+                                                    "delta_longitude",
+                                                    "delta_altitude",
+                                                ],
+                                                "properties": {
+                                                    "delta_latitude": {
+                                                        "type": "integer",
+                                                        "description": "oneMicrodegreeNorth (10), oneMicrodegreeSouth (-10) , unavailable(131072)",
+                                                        "minimum": -131071,
+                                                        "maximum": 131072
+                                                    },
+                                                    "delta_longitude": {
+                                                        "type": "integer",
+                                                        "description": "oneMicrodegreeEast (10), oneMicrodegreeWest (-10), unavailable(131072)",
+                                                        "minimum": -131071,
+                                                        "maximum": 131072
+                                                    },
+                                                    "delta_altitude": {
+                                                        "type": "integer",
+                                                        "description": "oneCentimeterUp (1), oneCentimeterDown (-1), unavailable(12800)",
+                                                        "minimum": -12700,
+                                                        "maximum": 12800
+                                                    },
+                                                },
+                                            },
+                                            "path_delta_time": {
+                                                "type": "integer",
+                                                "description": "tenMilliSecondsInPast(1)",
+                                                "minimum": 1,
+                                                "maximum": 65535
+                                            },
+                                        },
+                                    }
+                                }
                             },
                             "road_type": {
                                 "type": "integer",
@@ -295,11 +428,10 @@ const denmSchema =
                                 "minimum": -1,
                                 "maximum": 14
                             },
-                            "position_solution_type": {
+                            "positioning_solution": {
                                 "type": "integer",
                                 "description": "noPositioningSolution(0), sGNSS(1), dGNSS(2), sGNSSplusDR(3), dGNSSplusDR(4), dR(5), ...",
                                 "minimum": 0,
-                                "maximum": 5
                             }
                         }
                     }

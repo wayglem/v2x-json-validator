@@ -1,7 +1,7 @@
 {
   "type": "denm",
   "origin": "self",
-  "version": "0.0.1",
+  "version": "0.2.0",
   "source_uuid": "uuid14",
   "timestamp": 1574778515425,
   "message": {
@@ -14,47 +14,95 @@
       },
       "detection_time": 503253332000,
       "reference_time": 503253330000,
-      "termination": 0,
+      "termination": 1,
       "event_position": {
         "latitude": 486263556,
-        "longitude": 22492123,
-        "altitude": 1340,
-        "confidence": {
-          "semi_major_confidence": 1000,
-          "semi_minor_confidence": 100,
-          "semi_major_orientation": 800,
-          "altitude": 5
-        }
+        "longitude": 224921234,
+        "altitude": 20000
       },
-      "relevant_distance": 2,
-      "relevance_traffic_direction": 1,
-      "validity_duration": 180,
-      "transmission_interval": 1000,
-      "station_type": 5
+      "relevance_distance": 3,
+      "relevance_traffic_direction": 2,
+      "validity_duration": 600,
+      "transmission_interval": 500,
+      "station_type": 5,
+      "confidence": {
+        "position_confidence_ellipse": {
+          "semi_major_confidence": 100,
+          "semi_minor_confidence": 50,
+          "semi_major_orientation": 180
+        },
+        "altitude": 3
+      }
     },
     "situation_container": {
-      "information_quality": 4,
+      "information_quality": 1,
       "event_type": {
-        "cause": 1,
-        "subcause": 6
+        "cause": 97,
+        "subcause": 0
       },
       "linked_cause": {
-        "cause": 94,
-        "subcause": 2
+        "cause": 1,
+        "subcause": 1
       }
     },
     "location_container": {
-      "event_speed": 1000,
-      "event_position_heading": 3500,
+      "event_speed": 289,
+      "event_position_heading": 1806,
+      "traces": [
+        [
+          {
+            "path_position": {
+              "delta_latitude": 102,
+              "delta_longitude": 58,
+              "delta_altitude": -10
+            },
+            "path_delta_time": 19
+          },
+          {
+            "path_position": {
+              "delta_latitude": 96,
+              "delta_longitude": 42,
+              "delta_altitude": -6
+            },
+            "path_delta_time": 21
+          }
+        ],
+        [
+          {
+            "path_position": {
+              "delta_latitude": 75,
+              "delta_longitude": 12,
+              "delta_altitude": 3
+            },
+            "path_delta_time": 20
+          },
+          {
+            "path_position": {
+              "delta_latitude": 74,
+              "delta_longitude": 11,
+              "delta_altitude": 2
+            },
+            "path_delta_time": 20
+          },
+          {
+            "path_position": {
+              "delta_latitude": 73,
+              "delta_longitude": 10,
+              "delta_altitude": 6
+            },
+            "path_delta_time": 20
+          }
+        ]
+      ],
       "road_type": 0,
       "confidence": {
-        "event_speed": 10,
-        "event_position_heading": 10
+        "speed": 3,
+        "heading": 2
       }
     },
     "alacarte_container": {
-      "lane_position": 2,
-      "position_solution_type": 3
+      "lane_position": -1,
+      "positioning_solution": 2
     }
   }
 }
