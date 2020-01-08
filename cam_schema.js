@@ -1,7 +1,8 @@
 camSchema =
     {
-        "type": "object",
         "$id": "#cam",
+        // "$schema": "https://json-schema.org/draft/2019-09/schema",
+        "type": "object",
         "required": [
             "type",
             "origin",
@@ -18,14 +19,21 @@ camSchema =
                 "type": "string",
                 "enum": [
                     "self",
-                    "mec_app"
+                    "global_application",
+                    "mec_application",
+                    "on_board_application",
                 ],
                 "description": "the entity responsible for this message"
             },
             "version": {
                 "type": "string",
-                "examples": ["0.0.1", "1.0.0"],
-                "description": "json message format version"
+                "description": "json message format version",
+                "default": "0.2.0",
+                "examples": [
+                    "0.0.1",
+                    "0.2.0",
+                    "1.0.0",
+                ]
             },
             "source_uuid": {
                 "type": "string",
@@ -46,7 +54,6 @@ camSchema =
                     "generation_delta",
                     "basic_container",
                     "high_frequency_container",
-                    "low_frequency_container"
                 ],
                 "properties": {
                     "protocol_version": {
@@ -61,16 +68,20 @@ camSchema =
                         "maximum": 4294967295,
                         "examples": [1]
                     },
-                    "generation_delta": {
+                    "generation_delta_time": {
                         "type": "integer",
-                        "description": "in milliseconds",
+                        "description": "oneMilliSec(1)",
                         "minimum": 0,
                         "maximum": 65535,
                         "examples": [1]
                     },
                     "basic_container": {
                         "type": "object",
-                        "required": ["station_type", "position"],
+                        "required": [
+                            "station_type",
+                            "reference_position",
+                            "confidence",
+                        ],
                         "properties": {
                             "station_type": {
                                 "description": "unknown(0), pedestrian(1), cyclist(2), moped(3), motorcycle(4), passengerCar(5), bus(6), lightTruck(7), heavyTruck(8), trailer(9), specialVehicles(10), tram(11), roadSideUnit(15)",
@@ -78,9 +89,13 @@ camSchema =
                                 "minimum": 0,
                                 "maximum": 255
                             },
-                            "position": {
+                            "reference_position": {
                                 "type": "object",
-                                "required": ["latitude", "longitude"],
+                                "required": [
+                                    "latitude",
+                                    "longitude",
+                                    "altitude",
+                                ],
                                 "properties": {
                                     "latitude": {
                                         "type": "integer",
@@ -100,42 +115,68 @@ camSchema =
                                         "minimum": -100000,
                                         "maximum": 800001
                                     },
-                                    "confidence": {
+                                },
+                            },
+                            "confidence": {
+                                "type": "object",
+                                "required": [
+                                    "position_confidence_ellipse",
+                                    "altitude",
+                                ],
+                                "properties": {
+                                    "position_confidence_ellipse": {
                                         "type": "object",
+                                        "required": [
+                                            "semi_major_confidence",
+                                            "semi_minor_confidence",
+                                            "semi_major_orientation",
+                                        ],
                                         "properties": {
                                             "semi_major_confidence": {
                                                 "type": "integer",
-                                                "description": "Unit: cm. oneCentimeter(1), outOfRange(4094), unavailable(4095)",
+                                                "description": "oneCentimeter(1), outOfRange(4094), unavailable(4095)",
                                                 "minimum": 0,
                                                 "maximum": 4095
                                             },
                                             "semi_minor_confidence": {
                                                 "type": "integer",
-                                                "description": "Unit: cm. oneCentimeter(1), outOfRange(4094), unavailable(4095)",
+                                                "description": "oneCentimeter(1), outOfRange(4094), unavailable(4095)",
                                                 "minimum": 0,
                                                 "maximum": 4095
                                             },
                                             "semi_major_orientation": {
                                                 "type": "integer",
-                                                "description": "Unit 0.1 degree. wgs84North(0), wgs84East(900), wgs84South(1800), wgs84West(2700), unavailable(3601)",
+                                                "description": "wgs84North(0), wgs84East(900), wgs84South(1800), wgs84West(2700), unavailable(3601)",
                                                 "minimum": 0,
                                                 "maximum": 3601
                                             },
-                                            "altitude": {
-                                                "type": "integer",
-                                                "description": "alt-000-01 (0), alt-000-02 (1), alt-000-05 (2), alt-000-10 (3), alt-000-20 (4), alt-000-50 (5), alt-001-00 (6), alt-002-00 (7), alt-005-00 (8), alt-010-00 (9), alt-020-00 (10), alt-050-00 (11), alt-100-00 (12), alt-200-00 (13), outOfRange (14), unavailable (15)",
-                                                "minimum": 0,
-                                                "maximum": 15
-                                            }
                                         }
+                                    },
+                                    "altitude": {
+                                        "type": "integer",
+                                        "description": "alt-000-01 (0), alt-000-02 (1), alt-000-05 (2), alt-000-10 (3), alt-000-20 (4), alt-000-50 (5), alt-001-00 (6), alt-002-00 (7), alt-005-00 (8), alt-010-00 (9), alt-020-00 (10), alt-050-00 (11), alt-100-00 (12), alt-200-00 (13), outOfRange (14), unavailable (15)",
+                                        "minimum": 0,
+                                        "maximum": 15,
                                     }
                                 }
-                            }
+                            },
                         }
                     },
                     "high_frequency_container": {
                         "type": "object",
-                        "required": ["heading", "speed", "longitudinal_acceleration", "yaw_rate"],
+                        "description": "The basic vehicle container high frequency",
+                        "required": [
+                            "heading",
+                            "speed",
+                            "drive_direction",
+                            "vehicle_length",
+                            "vehicle_width",
+                            "longitudinal_acceleration",
+                            "curvature",
+                            "curvature_calculation_mode",
+                            "yaw_rate",
+                            "confidence",
+                        ],
                         "properties": {
                             "heading": {
                                 "type": "integer",
@@ -149,18 +190,6 @@ camSchema =
                                 "minimum": 0,
                                 "maximum": 16383
                             },
-                            "longitudinal_acceleration": {
-                                "description": "unit: 0,1 m/s2. pointOneMeterPerSecSquaredForward(1), pointOneMeterPerSecSquaredBackward(-1), unavailable(161)",
-                                "type": "integer",
-                                "minimum": -160,
-                                "maximum": 161
-                            },
-                            "yaw_rate": {
-                                "type": "integer",
-                                "description": "Unit: 0,01 degree/s. straight(0), degSec-000-01ToRight(-1), degSec-000-01ToLeft(1), unavailable(32767)",
-                                "minimum": -32766,
-                                "maximum": 32767
-                            },
                             "drive_direction": {
                                 "type": "integer",
                                 "description": "forward (0), backward (1), unavailable (2)",
@@ -169,31 +198,43 @@ camSchema =
                             },
                             "vehicle_length": {
                                 "type": "integer",
-                                "description": "Unit: 0.1 meter. tenCentimeters(1), outOfRange(1022), unavailable(1023)",
+                                "description": "tenCentimeters(1), outOfRange(1022), unavailable(1023)",
                                 "minimum": 1,
                                 "maximum": 1023
                             },
                             "vehicle_width": {
                                 "type": "integer",
-                                "description": "Unit: 0.1 meter. tenCentimeters(1), outOfRange(61), unavailable(62)",
+                                "description": "tenCentimeters(1), outOfRange(61), unavailable(62)",
                                 "minimum": 1,
                                 "maximum": 62
                             },
                             "curvature": {
                                 "type": "integer",
-                                "description": "Unit: 1 over 10 000 metres. straight(0), unavailable(1023)",
-                                "minimum": -1023,
-                                "maximum": 1023
+                                "description": "straight(0), reciprocalOf1MeterRadiusToRight(-30000), reciprocalOf1MeterRadiusToLeft(30000), unavailable(30001)",
+                                "minimum": -30000,
+                                "maximum": 30001
                             },
                             "curvature_calculation_mode": {
                                 "type": "integer",
-                                "description": "It describes whether the yaw rate is used to calculate the curvature. yawRateUsed(0), yawRateNotUsed(1), unavailable(2)",
+                                "description": "It describes whether the yaw rate is used to calculate the curvature: yawRateUsed(0), yawRateNotUsed(1), unavailable(2)",
                                 "minimum": 0,
                                 "maximum": 2
                             },
+                            "longitudinal_acceleration": {
+                                "description": "unit: 0,1 m/s2. pointOneMeterPerSecSquaredForward(1), pointOneMeterPerSecSquaredBackward(-1), unavailable(161)",
+                                "type": "integer",
+                                "minimum": -160,
+                                "maximum": 161
+                            },
+                            "yaw_rate": {
+                                "type": "integer",
+                                "description": "Unit: 0,01 degree/s: straight(0), degSec-000-01ToRight(-1), degSec-000-01ToLeft(1), unavailable(32767)",
+                                "minimum": -32766,
+                                "maximum": 32767
+                            },
                             "acceleration_control": {
                                 "type": "string",
-                                "description": "Current controlling mechanism for longitudinal movement of the vehicle. Represented as a bit string",
+                                "description": "Current controlling mechanism for longitudinal movement of the vehicle. Represented as a bit string: brakePedalEngaged (0), gasPedalEngaged (1), emergencyBrakeEngaged (2), collisionWarningEngaged(3), accEngaged(4), cruiseControlEngaged(5), speedLimiterEngaged(6)",
                                 "example": ["00000000", "1000000", "0000011"]
                             },
                             "lane_position": {
@@ -216,18 +257,30 @@ camSchema =
                             },
                             "confidence": {
                                 "type": "object",
+                                "required": [
+                                    "heading",
+                                    "speed",
+                                    "vehicle_length",
+                                    "yaw_rate",
+                                ],
                                 "properties": {
                                     "heading": {
                                         "type": "integer",
-                                        "description": "Unit: 0,1 degree. equalOrWithinZeroPointOneDegree (1), equalOrWithinOneDegree (10), outOfRange(126), unavailable(127)",
+                                        "description": "equalOrWithinZeroPointOneDegree (1), equalOrWithinOneDegree (10), outOfRange(126), unavailable(127)",
                                         "minimum": 1,
                                         "maximum": 127
                                     },
                                     "speed": {
                                         "type": "integer",
-                                        "description": "Unit: 0.01 m/s. equalOrWithinOneCentimeterPerSec(1), equalOrWithinOneMeterPerSec(100), outOfRange(126), unavailable(127)",
+                                        "description": "equalOrWithinOneCentimeterPerSec(1), equalOrWithinOneMeterPerSec(100), outOfRange(126), unavailable(127)",
                                         "minimum": 1,
                                         "maximum": 127
+                                    },
+                                    "vehicle_length": {
+                                        "type": "integer",
+                                        "description": "noTrailerPresent(0), trailerPresentWithKnownLength(1), trailerPresentWithUnknownLength(2), trailerPresenceIsUnknown(3), unavailable(4)",
+                                        "minimum": 0,
+                                        "maximum": 4
                                     },
                                     "yaw_rate": {
                                         "type": "integer",
@@ -237,15 +290,9 @@ camSchema =
                                     },
                                     "longitudinal_acceleration": {
                                         "type": "integer",
-                                        "description": "Unit: 0,1 m/s2. pointOneMeterPerSecSquared(1), outOfRange(101), unavailable(102)",
+                                        "description": "pointOneMeterPerSecSquared(1), outOfRange(101), unavailable(102)",
                                         "minimum": 0,
                                         "maximum": 102
-                                    },
-                                    "vehicle_length": {
-                                        "type": "integer",
-                                        "description": "noTrailerPresent(0), trailerPresentWithKnownLength(1), trailerPresentWithUnknownLength(2), trailerPresenceIsUnknown(3), unavailable(4)",
-                                        "minimum": 0,
-                                        "maximum": 4
                                     },
                                     "curvature": {
                                         "type": "integer",
@@ -253,13 +300,13 @@ camSchema =
                                         "minimum": 0,
                                         "maximum": 7
                                     },
-                                    "vertical_acceleration": {
+                                    "lateral_acceleration": {
                                         "type": "integer",
                                         "description": "Unit: 0,1 m/s2. pointOneMeterPerSecSquared(1), outOfRange(101), unavailable(102)",
                                         "minimum": 0,
                                         "maximum": 102
                                     },
-                                    "lateral_acceleration": {
+                                    "vertical_acceleration": {
                                         "type": "integer",
                                         "description": "Unit: 0,1 m/s2. pointOneMeterPerSecSquared(1), outOfRange(101), unavailable(102)",
                                         "minimum": 0,
@@ -271,19 +318,72 @@ camSchema =
                     },
                     "low_frequency_container": {
                         "type": "object",
-                        "required": ["vehicle_role"],
+                        "description": "The basic vehicle container low frequency",
+                        "required": [
+                            "vehicle_role",
+                            "exterior_lights",
+                            "path_history",
+                        ],
                         "properties": {
                             "vehicle_role": {
                                 "type": "integer",
+                                "description": "default(0), publicTransport(1), specialTransport(2), dangerousGoods(3), roadWork(4), rescue(5), emergency(6), safetyCar(7), agriculture(8),commercial(9),military(10),roadOperator(11),taxi(12), reserved1(13), reserved2(14), reserved3(15)",
                                 "minimum": 0,
-                                "maximum": 15,
-                                "description": "default(0), publicTransport(1), specialTransport(2), dangerousGoods(3), roadWork(4), rescue(5), emergency(6), safetyCar(7), agriculture(8),commercial(9),military(10),roadOperator(11),taxi(12), reserved1(13), reserved2(14), reserved3(15)"
+                                "maximum": 15
                             },
                             "exterior_lights": {
                                 "type": "string",
-                                "description": "Status of the exterior light switches represented as a bit string. lowBeamHeadlightsOn (0), highBeamHeadlightsOn (1), leftTurnSignalOn (2), rightTurnSignalOn (3), daytimeRunningLightsOn (4), reverseLightOn (5), fogLightOn (6), parkingLightsOn (7)",
-                                "example": ["00000000", "11111111", "0000011"]
-                            }
+                                "description": "Status of the exterior light switches represented as a bit string: lowBeamHeadlightsOn (0), highBeamHeadlightsOn (1), leftTurnSignalOn (2), rightTurnSignalOn (3), daytimeRunningLightsOn (4), reverseLightOn (5), fogLightOn (6), parkingLightsOn (7)",
+                                "example": [
+                                    "00000000",
+                                    "10011010",
+                                    "00000110",]
+                            },
+                            "path_history": {
+                                "type": "array",
+                                "items": {
+                                    "type": "object",
+                                    "required": [
+                                        "path_position",
+                                    ],
+                                    "properties": {
+                                        "path_position": {
+                                            "type": "object",
+                                            "required": [
+                                                "delta_latitude",
+                                                "delta_longitude",
+                                                "delta_altitude",
+                                            ],
+                                            "properties": {
+                                                "delta_latitude": {
+                                                    "type": "integer",
+                                                    "description": "oneMicrodegreeNorth (10), oneMicrodegreeSouth (-10) , unavailable(131072)",
+                                                    "minimum": -131071,
+                                                    "maximum": 131072
+                                                },
+                                                "delta_longitude": {
+                                                    "type": "integer",
+                                                    "description": "oneMicrodegreeEast (10), oneMicrodegreeWest (-10), unavailable(131072)",
+                                                    "minimum": -131071,
+                                                    "maximum": 131072
+                                                },
+                                                "delta_altitude": {
+                                                    "type": "integer",
+                                                    "description": "oneCentimeterUp (1), oneCentimeterDown (-1), unavailable(12800)",
+                                                    "minimum": -12700,
+                                                    "maximum": 12800
+                                                },
+                                            },
+                                        },
+                                        "path_delta_time": {
+                                            "type": "integer",
+                                            "description": "tenMilliSecondsInPast(1)",
+                                            "minimum": 1,
+                                            "maximum": 65535
+                                        },
+                                    },
+                                }
+                            },
                         }
                     }
                 }
