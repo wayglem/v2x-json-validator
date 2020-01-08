@@ -1,7 +1,7 @@
 {
   "name": "json_validator",
   "version": "0.0.1",
-  "description": "validate json DENM, CAM",
+  "description": "validate json DENM and CAM",
   "main": "index.js",
   "dependencies": {
     "jsoneditor": "^7.2.1"
