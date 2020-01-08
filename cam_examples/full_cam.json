@@ -1,55 +1,75 @@
 {
   "type": "cam",
   "origin": "self",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "source_uuid": "uuid14",
   "timestamp": 1574778515424,
   "message": {
-    "protocol_version": 42,
+    "protocol_version": 1,
     "station_id": 42,
-    "generation_delta": 42,
+    "generation_delta": 3,
     "basic_container": {
       "station_type": 5,
-      "position": {
+      "reference_position": {
         "latitude": 486263556,
         "longitude": 22492123,
-        "altitude": 15000,
-        "confidence": {
-          "semi_major_confidence": 1000,
-          "semi_minor_confidence": 100,
-          "semi_major_orientation": 800,
-          "altitude": 5
-        }
+        "altitude": 20000
+      },
+      "confidence": {
+        "position_confidence_ellipse": {
+          "semi_major_confidence": 100,
+          "semi_minor_confidence": 50,
+          "semi_major_orientation": 180
+        },
+        "altitude": 3
       }
     },
     "high_frequency_container": {
-      "heading": 1639,
-      "speed": 365,
-      "longitudinal_acceleration": 0,
-      "yaw_rate": -6,
+      "heading": 180,
+      "speed": 253,
       "drive_direction": 0,
-      "vehicle_length": 45,
-      "vehicle_width": 17,
-      "curvature": 1,
-      "curvature_calculation_mode": 0,
-      "acceleration_control": "0011000",
-      "lane_position": 2,
-      "lateral_acceleration": 1,
-      "vertical_acceleration":-1,
+      "vehicle_length": 40,
+      "vehicle_width": 20,
+      "curvature": 0,
+      "curvature_calculation_mode": 1,
+      "longitudinal_acceleration": 2,
+      "yaw_rate": 0,
+      "acceleration_control": "0000010",
+      "lane_position": 1,
+      "lateral_acceleration": 7,
+      "vertical_acceleration": 2,
       "confidence": {
-        "heading": 15,
-        "speed": 12,
-        "yaw_rate": 2,
-        "longitudinal_acceleration": 16,
-        "vehicle_length": 3,
-        "curvature": 0,
-        "vertical_acceleration": 5,
-        "lateral_acceleration": 0
+        "heading": 2,
+        "speed": 3,
+        "vehicle_length": 0,
+        "yaw_rate": 0,
+        "longitudinal_acceleration": 1,
+        "curvature": 1,
+        "lateral_acceleration": 2,
+        "vertical_acceleration": 1
       }
     },
     "low_frequency_container": {
-      "vehicle_role": 2,
-      "exterior_lights": "00000000"
+      "vehicle_role": 0,
+      "exterior_lights": "0000001",
+      "path_history": [
+        {
+          "path_position": {
+            "delta_latitude": 102,
+            "delta_longitude": 58,
+            "delta_altitude": -10
+          },
+          "path_delta_time": 19
+        },
+        {
+          "path_position": {
+            "delta_latitude": 96,
+            "delta_longitude": 42,
+            "delta_altitude": -6
+          },
+          "path_delta_time": 21
+        }
+      ]
     }
   }
 }

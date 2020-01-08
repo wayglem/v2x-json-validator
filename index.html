@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html>
+<html lang="en">
 <head>
     <!-- when using the mode "code", it's important to specify charset utf-8 -->
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
@@ -10,6 +10,7 @@
     <script type="text/javascript" src="./utils.js"></script>
     <script src="./cam_schema.js"></script>
     <script src="./denm_schema.js"></script>
+    <title>V2X messages JSON validator</title>
 </head>
 <body>
 <h1>V2X messages JSON validator</h1>
@@ -17,9 +18,10 @@
 <div class="wrapper">
     <div class="left-editor-header">
         <H2>CAM</H2>
+        <label for="select-cam">generate a CAM sample:</label>
         <select id="select-cam">
-            <option>basic_cam.json</option>
-            <option>full_cam.json</option>
+            <option label="basic">basic_cam.json</option>
+            <option label="full">full_cam.json</option>
         </select>
         <button type="submit" onclick="loadSample('CAM')">Ok</button>
         <a href="cam_schema.js" target="_blank">
@@ -29,6 +31,7 @@
     </div>
     <div class="right-editor-header">
         <H2>DENM</H2>
+        <label for="select-denm">generate a DENM sample:</label>
         <select id="select-denm">
             <option>basic_denm.json</option>
             <option>full_denm.json</option>

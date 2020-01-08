@@ -1,29 +1,45 @@
 {
   "type": "cam",
   "origin": "self",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "source_uuid": "uuid14",
   "timestamp": 1574778515424,
   "message": {
-    "protocol_version": 42,
+    "protocol_version": 1,
     "station_id": 42,
-    "generation_delta": 42,
+    "generation_delta": 3,
     "basic_container": {
       "station_type": 5,
-      "position": {
+      "reference_position": {
         "latitude": 486263556,
-        "longitude": 22492123
+        "longitude": 22492123,
+        "altitude": 20000
+      },
+      "confidence": {
+        "position_confidence_ellipse":{
+          "semi_major_confidence":  100,
+          "semi_minor_confidence":  50,
+          "semi_major_orientation": 180
+        },
+        "altitude": 3
       }
     },
     "high_frequency_container": {
-      "heading": 1639,
+      "heading": 180,
       "speed": 365,
+      "drive_direction": 0,
+      "vehicle_length": 40,
+      "vehicle_width": 20,
+      "curvature":  0,
+      "curvature_calculation_mode":  1,
       "longitudinal_acceleration": 0,
-      "yaw_rate": -6
-    },
-    "low_frequency_container": {
-      "vehicle_role": 2,
-      "exterior_lights": "00000000"
+      "yaw_rate": 0,
+      "confidence": {
+        "heading":  2,
+        "speed":  3,
+        "vehicle_length":  0,
+        "yaw_rate": 0
+      }
     }
   }
 }
