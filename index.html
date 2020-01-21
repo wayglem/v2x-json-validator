@@ -2,12 +2,12 @@
 <html lang="en">
 <head>
     <!-- when using the mode "code", it's important to specify charset utf-8 -->
-    <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+    <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
 
     <link href="dist/jsoneditor/jsoneditor.min.css" rel="stylesheet" type="text/css">
     <link href="./style.css" rel="stylesheet" type="text/css">
     <script src="dist/jsoneditor/jsoneditor.min.js"></script>
-    <script type="text/javascript" src="./utils.js"></script>
+    <script src="./utils.js" type="text/javascript"></script>
     <script src="./cam_schema.js"></script>
     <script src="./denm_schema.js"></script>
     <title>V2X messages JSON validator</title>
@@ -21,29 +21,31 @@
         <label for="select-cam">generate a CAM sample:</label>
         <select id="select-cam">
             <option label="basic">basic_cam.json</option>
+            <option label="standard">standard_cam.json</option>
             <option label="full">full_cam.json</option>
         </select>
-        <button type="submit" onclick="loadSample('CAM')">Ok</button>
+        <button onclick="loadSample('CAM')" type="submit">Ok</button>
         <a href="cam_schema.js" target="_blank">
-            <button type="button" class="schema-button"> show schema</button>
+            <button class="schema-button" type="button"> show schema</button>
         </a>
-        <div id="cam-error" class="error-message"></div>
+        <div class="error-message" id="cam-error"></div>
     </div>
     <div class="right-editor-header">
         <H2>DENM</H2>
         <label for="select-denm">generate a DENM sample:</label>
         <select id="select-denm">
-            <option>basic_denm.json</option>
-            <option>full_denm.json</option>
+            <option label="basic">basic_denm.json</option>
+            <option label="standard">standard_denm.json</option>
+            <option label="full">full_denm.json</option>
         </select>
-        <button type="submit" onclick="loadSample('DENM')">Ok</button>
+        <button onclick="loadSample('DENM')" type="submit">Ok</button>
         <a href="denm_schema.js" target="_blank">
-            <button type="button" class="schema-button"> show schema</button>
+            <button class="schema-button" type="button"> show schema</button>
         </a>
-        <div id="denm-error" class="error-message"></div>
+        <div class="error-message" id="denm-error"></div>
     </div>
-    <div id="camJsonEditor" class="editor left-editor"></div>
-    <div id="denmJsonEditor" class="editor right-editor"></div>
+    <div class="editor left-editor" id="camJsonEditor"></div>
+    <div class="editor right-editor" id="denmJsonEditor"></div>
 </div>
 <script>
     const camErrorDiv = document.getElementById("cam-error");
