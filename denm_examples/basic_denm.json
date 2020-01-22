@@ -1,7 +1,7 @@
 {
   "type": "denm",
   "origin": "self",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "source_uuid": "uuid14",
   "timestamp": 1574778515425,
   "message": {
@@ -9,7 +9,7 @@
     "station_id": 42,
     "management_container": {
       "action_id": {
-        "origin_station_id": 42,
+        "originating_station_id": 41,
         "sequence_number": 1
       },
       "detection_time": 503253332000,
@@ -18,15 +18,6 @@
         "latitude": 486263556,
         "longitude": 224921234,
         "altitude": 20000
-      },
-      "station_type": 5,
-      "confidence": {
-        "position_confidence_ellipse":{
-          "semi_major_confidence":  100,
-          "semi_minor_confidence":  50,
-          "semi_major_orientation": 180
-        },
-        "altitude": 3
       }
     }
   }

@@ -60,12 +60,14 @@ denmSchema =
                 "properties": {
                     "protocol_version": {
                         "type": "integer",
+                        "description": "version of the ITS message and/or communication protocol",
                         "minimum": 0,
                         "maximum": 255,
                         "examples": [1]
                     },
                     "station_id": {
                         "type": "integer",
+                        "description": "identifier for an ITS-S",
                         "minimum": 0,
                         "maximum": 4294967295,
                         "examples": [1]
@@ -77,18 +79,18 @@ denmSchema =
                             "detection_time",
                             "reference_time",
                             "event_position",
-                            "station_type",
-                            "confidence"
+                            // "station_type", if not provided, "station_type" = 0 (unknown)
+                            // "confidence"
                         ],
                         "properties": {
                             "action_id": {
                                 "type": "object",
                                 "required": [
-                                    "origin_station_id",
+                                    "originating_station_id",
                                     "sequence_number"
                                 ],
                                 "properties": {
-                                    "origin_station_id": {
+                                    "originating_station_id": {
                                         "type": "integer",
                                         "description": "identifier of an its station",
                                         "minimum": 0,
@@ -131,18 +133,21 @@ denmSchema =
                                     "latitude": {
                                         "type": "integer",
                                         "description": "Unit: 0,1 microdegree. oneMicrodegreeNorth (10), oneMicrodegreeSouth (-10), unavailable(900000001)",
+                                        "default": 900000001,
                                         "minimum": -900000000,
                                         "maximum": 900000001
                                     },
                                     "longitude": {
                                         "type": "integer",
                                         "description": "Unit: 0,1 microdegree. oneMicrodegreeEast (10), oneMicrodegreeWest (-10), unavailable(1800000001)",
+                                        "default": 1800000001,
                                         "minimum": -1800000000,
                                         "maximum": 1800000001
                                     },
                                     "altitude": {
                                         "type": "integer",
-                                        "description": "Unit: 0.01 meter. referenceEllipsoidSurface(0), oneCentimeter(1), unavailable(800001)} (-100000..800001)",
+                                        "description": "Unit: 0.01 meter. referenceEllipsoidSurface(0), oneCentimeter(1), unavailable(800001)",
+                                        "default": 800001,
                                         "minimum": -100000,
                                         "maximum": 800001
                                     },
@@ -176,39 +181,43 @@ denmSchema =
                             "station_type": {
                                 "description": "unknown(0), pedestrian(1), cyclist(2), moped(3), motorcycle(4), passengerCar(5), bus(6), lightTruck(7), heavyTruck(8), trailer(9), specialVehicles(10), tram(11), roadSideUnit(15)",
                                 "type": "integer",
+                                "default": 0,
                                 "minimum": 0,
                                 "maximum": 255
                             },
                             "confidence": {
                                 "type": "object",
                                 "required": [
-                                    "position_confidence_ellipse",
-                                    "altitude",
+                                    // "position_confidence_ellipse",
+                                    // "altitude", if not provided, "altitude" = 15 (unavailable)
                                 ],
                                 "properties": {
                                     "position_confidence_ellipse": {
                                         "type": "object",
                                         "required": [
-                                            "semi_major_confidence",
-                                            "semi_minor_confidence",
-                                            "semi_major_orientation",
+                                            // "semi_major_confidence", if not provided, "semi_major_confidence" = 4095 (unavailable)
+                                            // "semi_minor_confidence", if not provided, "semi_minor_confidence" = 4095 (unavailable)
+                                            // "semi_major_orientation", if not provided, "semi_major_orientation" = 3601 (unavailable)
                                         ],
                                         "properties": {
                                             "semi_major_confidence": {
                                                 "type": "integer",
                                                 "description": "oneCentimeter(1), outOfRange(4094), unavailable(4095)",
+                                                "default": 4095,
                                                 "minimum": 0,
                                                 "maximum": 4095
                                             },
                                             "semi_minor_confidence": {
                                                 "type": "integer",
                                                 "description": "oneCentimeter(1), outOfRange(4094), unavailable(4095)",
+                                                "default": 4095,
                                                 "minimum": 0,
                                                 "maximum": 4095
                                             },
                                             "semi_major_orientation": {
                                                 "type": "integer",
                                                 "description": "wgs84North(0), wgs84East(900), wgs84South(1800), wgs84West(2700), unavailable(3601)",
+                                                "default": 3601,
                                                 "minimum": 0,
                                                 "maximum": 3601
                                             },
@@ -217,6 +226,7 @@ denmSchema =
                                     "altitude": {
                                         "type": "integer",
                                         "description": "alt-000-01 (0), alt-000-02 (1), alt-000-05 (2), alt-000-10 (3), alt-000-20 (4), alt-000-50 (5), alt-001-00 (6), alt-002-00 (7), alt-005-00 (8), alt-010-00 (9), alt-020-00 (10), alt-050-00 (11), alt-100-00 (12), alt-200-00 (13), outOfRange (14), unavailable (15)",
+                                        "default": 15,
                                         "minimum": 0,
                                         "maximum": 15,
                                     }
@@ -227,13 +237,14 @@ denmSchema =
                     "situation_container": {
                         "type": "object",
                         "required": [
-                            "information_quality",
+                            // "information_quality", if not provided, "information_quality" = 0 (unavailable)
                             "event_type",
                         ],
                         "properties": {
                             "information_quality": {
                                 "type": "integer",
                                 "description": "unavailable(0), lowest(1), highest(7)",
+                                "default": 0,
                                 "minimum": 0,
                                 "maximum": 7
                             },
@@ -241,7 +252,8 @@ denmSchema =
                                 "type": "object",
                                 "required": [
                                     "cause",
-                                    "subcause",],
+                                    // "subcause", if not provided, "subcause" = 0 (unavailable)
+                                ],
                                 "properties": {
                                     "cause": {
                                         "type": "integer",
@@ -300,6 +312,7 @@ denmSchema =
                                             "DangerousSituation: unavailable(0), emergencyElectronicBrakeEngaged(1), preCrashSystemEngaged(2), espEngaged(3), absEngaged(4), aebEngaged(5), brakeWarningEngaged(6), collisionRiskWarningEngaged(7)" +
                                             "VehicleBreakdown: unavailable(0), lackOfFuel (1), lackOfBatteryPower (2), engineProblem(3), transmissionProblem(4), engineCoolingProblem(5), brakingSystemProblem(6), steeringProblem(7), tyrePuncture(8)" +
                                             "PostCrash: unavailable(0), accidentWithoutECallTriggered (1), accidentWithECallManuallyTriggered (2), accidentWithECallAutomaticallyTriggered (3), accidentWithECallTriggeredWithoutAccessToCellularNetwork(4)",
+                                        "default": 0,
                                         "minimum": 0,
                                         "maximum": 255
                                     }
@@ -309,7 +322,7 @@ denmSchema =
                                 "type": "object",
                                 "required": [
                                     "cause",
-                                    "subcause",
+                                    // "subcause", if not provided, "subcause" = 0 (unavailable)
                                 ],
                                 "properties": {
                                     "cause": {
@@ -321,6 +334,7 @@ denmSchema =
                                     "subcause": {
                                         "type": "integer",
                                         "description": "see the event type subcause description",
+                                        "default": 0,
                                         "minimum": 0,
                                         "maximum": 255
                                     }
@@ -331,7 +345,7 @@ denmSchema =
                     "location_container": {
                         "type": "object",
                         "required": [
-                            "traces",
+                            // "traces",
                         ],
                         "properties": {
                             "event_speed": {
@@ -353,32 +367,35 @@ denmSchema =
                                     "items": {
                                         "type": "object",
                                         "required": [
-                                            "path_position",
+                                            // "path_position",
                                         ],
                                         "properties": {
                                             "path_position": {
                                                 "type": "object",
                                                 "required": [
-                                                    "delta_latitude",
-                                                    "delta_longitude",
-                                                    "delta_altitude",
+                                                    // "delta_latitude", if not provided, "delta_latitude" = 131072 (unavailable)
+                                                    // "delta_longitude", if not provided, "delta_longitude" = 131072 (unavailable)
+                                                    // "delta_altitude", if not provided, "delta_altitude" = 12800 (unavailable)
                                                 ],
                                                 "properties": {
                                                     "delta_latitude": {
                                                         "type": "integer",
                                                         "description": "oneMicrodegreeNorth (10), oneMicrodegreeSouth (-10) , unavailable(131072)",
+                                                        "default": 131072,
                                                         "minimum": -131071,
                                                         "maximum": 131072
                                                     },
                                                     "delta_longitude": {
                                                         "type": "integer",
                                                         "description": "oneMicrodegreeEast (10), oneMicrodegreeWest (-10), unavailable(131072)",
+                                                        "default": 131072,
                                                         "minimum": -131071,
                                                         "maximum": 131072
                                                     },
                                                     "delta_altitude": {
                                                         "type": "integer",
                                                         "description": "oneCentimeterUp (1), oneCentimeterDown (-1), unavailable(12800)",
+                                                        "default": 12800,
                                                         "minimum": -12700,
                                                         "maximum": 12800
                                                     },
