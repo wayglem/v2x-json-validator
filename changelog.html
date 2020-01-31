@@ -8,6 +8,21 @@
 <body>
 <h1>V2X messages JSON validator</h1>
 <h2>Changelog</h2>
+<h3>2020/01/30</h3>
+<ul>
+    <li>FIX: claim a path history list with at the most 40 elements</li>
+    <li>FEAT: update the lane_position description</li>
+    <li>FEAT: disallow additional properties on the root level</li>
+    <li>FIX: activate the path_position requirement</li>
+    <li>FIX: claim a DENM traces root list with at least 1 and at the most 7 elements</li>
+    <li>FIX: activate the DENM traces requirement</li>
+    <li>FEAT: add the DENM path_history field, to be iso with the CAM path_history field</li>
+    <li>FEAT: update the DENM detection_time to the ETSI TS 102 894-2 V1.3.1 (2018-08)</li>
+    <li>FEAT: update the DENM reference_time to the ETSI TS 102 894-2 V1.3.1 (2018-08)</li>
+    <li>FEAT: update the CAM curvature to the ETSI TS 102 894-2 V1.3.1 (2018-08)</li>
+    <li>FEAT: fix the CAM acceleration_control size to 7</li>
+    <li>FEAT: fix the CAM exterior_lights size to 8</li>
+</ul>
 <h3>2020/01/20</h3>
 <ul>
     <li>FEAT: add standard examples with not required but useful fields</li>
@@ -47,8 +62,6 @@
     <li>FEAT: suspend the DENM information_quality requirement</li>
     <li>FEAT: suspend the DENM subcause requirements</li>
     <li>FEAT: suspend the DENM trace requirement</li>
-
-
 </ul>
 <h3>2020/01/08</h3>
 <ul>
