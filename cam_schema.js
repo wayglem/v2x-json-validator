@@ -3,6 +3,7 @@ camSchema =
         "$id": "#cam",
         // "$schema": "https://json-schema.org/draft/2019-09/schema",
         "type": "object",
+        "additionalProperties": false,
         "required": [
             "type",
             "origin",
@@ -28,7 +29,7 @@ camSchema =
             "version": {
                 "type": "string",
                 "description": "json message format version",
-                "default": "0.3.0",
+                "default": "0.4.0",
                 "examples": [
                     "0.0.1",
                     "0.2.0",
@@ -37,12 +38,18 @@ camSchema =
             },
             "source_uuid": {
                 "type": "string",
-                "examples": ["UNKNOWN"]
+                "description": "identifier",
+                "examples": [
+                    "UNKNOWN",
+                    "42"
+                ]
             },
             "timestamp": {
                 "type": "integer",
                 "description": "Unit: millisecond. The timestamp when the message was generated since Unix Epoch (1970/01/01)",
-                "examples": [1574778515424],
+                "examples": [
+                    1574778515424
+                ],
                 "minimum": 1514764800000,
                 "maximum": 1830297600000
             },
@@ -61,21 +68,29 @@ camSchema =
                         "description": "version of the ITS message and/or communication protocol",
                         "minimum": 0,
                         "maximum": 255,
-                        "examples": [1]
+                        "examples": [
+                            1
+                        ]
                     },
                     "station_id": {
                         "type": "integer",
                         "description": "identifier for an ITS-S",
                         "minimum": 0,
                         "maximum": 4294967295,
-                        "examples": [1, 42]
+                        "examples": [
+                            1,
+                            42
+                        ]
                     },
                     "generation_delta_time": {
                         "type": "integer",
                         "description": "time of the reference position in the CAM, considered as time of the CAM generation. TimestampIts mod 65 536. TimestampIts represents an integer value in milliseconds since 2004-01-01T00:00:00:000Z. oneMilliSec(1)",
                         "minimum": 0,
                         "maximum": 65535,
-                        "examples": [1, 1245]
+                        "examples": [
+                            1,
+                            1245
+                        ]
                     },
                     "basic_container": {
                         "type": "object",
@@ -225,10 +240,10 @@ camSchema =
                             },
                             "curvature": {
                                 "type": "integer",
-                                "description": "straight(0), reciprocalOf1MeterRadiusToRight(-30000), reciprocalOf1MeterRadiusToLeft(30000), unavailable(30001)",
-                                "default": 30001,
-                                "minimum": -30000,
-                                "maximum": 30001
+                                "description": "straight(0), unavailable(1023)",
+                                "default": 1023,
+                                "minimum": -1023,
+                                "maximum": 1023
                             },
                             "curvature_calculation_mode": {
                                 "type": "integer",
@@ -254,7 +269,13 @@ camSchema =
                             "acceleration_control": {
                                 "type": "string",
                                 "description": "Current controlling mechanism for longitudinal movement of the vehicle. Represented as a bit string: brakePedalEngaged (0), gasPedalEngaged (1), emergencyBrakeEngaged (2), collisionWarningEngaged(3), accEngaged(4), cruiseControlEngaged(5), speedLimiterEngaged(6)",
-                                "example": ["00000000", "1000000", "0000011"]
+                                "minLength": 7,
+                                "maxLength": 7,
+                                "example": [
+                                    "0000000",
+                                    "1000000",
+                                    "0000011"
+                                ]
                             },
                             "lane_position": {
                                 "type": "integer",
@@ -346,7 +367,7 @@ camSchema =
                         "required": [
                             // "vehicle_role", if not provided, "vehicle_role" = 0 (default)
                             "exterior_lights",
-                            // "path_history",
+                            "path_history",
                         ],
                         "properties": {
                             "vehicle_role": {
@@ -359,6 +380,8 @@ camSchema =
                             "exterior_lights": {
                                 "type": "string",
                                 "description": "Status of the exterior light switches represented as a bit string: lowBeamHeadlightsOn (0), highBeamHeadlightsOn (1), leftTurnSignalOn (2), rightTurnSignalOn (3), daytimeRunningLightsOn (4), reverseLightOn (5), fogLightOn (6), parkingLightsOn (7)",
+                                "minLength": 8,
+                                "maxLength": 8,
                                 "example": [
                                     "00000000",
                                     "10011010",
@@ -366,14 +389,17 @@ camSchema =
                             },
                             "path_history": {
                                 "type": "array",
+                                "description": "the path history, a path with a set of path points",
+                                "maxItems": 40,
                                 "items": {
                                     "type": "object",
                                     "required": [
-                                        // "path_position",
+                                        "path_position",
                                     ],
                                     "properties": {
                                         "path_position": {
                                             "type": "object",
+                                            "description": "offset position of a detected event point with regards to the previous detected event point (reference_position).",
                                             "required": [
                                                 // "delta_latitude", if not provided, "delta_latitude" = 131072 (unavailable)
                                                 // "delta_longitude", if not provided, "delta_longitude" = 131072 (unavailable)
@@ -405,13 +431,13 @@ camSchema =
                                         },
                                         "path_delta_time": {
                                             "type": "integer",
-                                            "description": "tenMilliSecondsInPast(1)",
+                                            "description": "time travelled by the detecting ITS-S since the previous detected event point (generation_delta_time). tenMilliSecondsInPast(1)",
                                             "minimum": 1,
                                             "maximum": 65535
                                         },
-                                    },
+                                    }
                                 }
-                            },
+                            }
                         }
                     }
                 }

@@ -1,7 +1,7 @@
 {
   "type": "denm",
   "origin": "self",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "source_uuid": "uuid14",
   "timestamp": 1574778515425,
   "message": {
@@ -38,6 +38,11 @@
     "location_container": {
       "event_speed": 289,
       "event_position_heading": 1806,
+      "traces": [
+        {
+          "path_history": []
+        }
+      ],
       "confidence": {
         "speed": 3,
         "heading": 2

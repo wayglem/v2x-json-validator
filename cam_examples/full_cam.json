@@ -1,7 +1,7 @@
 {
   "type": "cam",
   "origin": "self",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "source_uuid": "uuid14",
   "timestamp": 1574778515424,
   "message": {
@@ -51,7 +51,7 @@
     },
     "low_frequency_container": {
       "vehicle_role": 0,
-      "exterior_lights": "0000001",
+      "exterior_lights": "00000011",
       "path_history": [
         {
           "path_position": {

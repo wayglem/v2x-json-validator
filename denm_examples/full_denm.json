@@ -1,7 +1,7 @@
 {
   "type": "denm",
   "origin": "self",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "source_uuid": "uuid14",
   "timestamp": 1574778515425,
   "message": {
@@ -49,50 +49,54 @@
       "event_speed": 289,
       "event_position_heading": 1806,
       "traces": [
-        [
-          {
-            "path_position": {
-              "delta_latitude": 102,
-              "delta_longitude": 58,
-              "delta_altitude": -10
+        {
+          "path_history": [
+            {
+              "path_position": {
+                "delta_latitude": 102,
+                "delta_longitude": 58,
+                "delta_altitude": -10
+              },
+              "path_delta_time": 19
             },
-            "path_delta_time": 19
-          },
-          {
-            "path_position": {
-              "delta_latitude": 96,
-              "delta_longitude": 42,
-              "delta_altitude": -6
+            {
+              "path_position": {
+                "delta_latitude": 96,
+                "delta_longitude": 42,
+                "delta_altitude": -6
+              },
+              "path_delta_time": 21
+            }
+          ]
+        },
+        {
+          "path_history": [
+            {
+              "path_position": {
+                "delta_latitude": 75,
+                "delta_longitude": 12,
+                "delta_altitude": 3
+              },
+              "path_delta_time": 20
             },
-            "path_delta_time": 21
-          }
-        ],
-        [
-          {
-            "path_position": {
-              "delta_latitude": 75,
-              "delta_longitude": 12,
-              "delta_altitude": 3
+            {
+              "path_position": {
+                "delta_latitude": 74,
+                "delta_longitude": 11,
+                "delta_altitude": 2
+              },
+              "path_delta_time": 20
             },
-            "path_delta_time": 20
-          },
-          {
-            "path_position": {
-              "delta_latitude": 74,
-              "delta_longitude": 11,
-              "delta_altitude": 2
-            },
-            "path_delta_time": 20
-          },
-          {
-            "path_position": {
-              "delta_latitude": 73,
-              "delta_longitude": 10,
-              "delta_altitude": 6
-            },
-            "path_delta_time": 20
-          }
-        ]
+            {
+              "path_position": {
+                "delta_latitude": 73,
+                "delta_longitude": 10,
+                "delta_altitude": 6
+              },
+              "path_delta_time": 20
+            }
+          ]
+        }
       ],
       "road_type": 0,
       "confidence": {
