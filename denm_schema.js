@@ -3,6 +3,7 @@ denmSchema =
         "$id": "#denm",
         // "$schema": "https://json-schema.org/draft/2019-09/schema",
         "type": "object",
+        "additionalProperties": false,
         "required": [
             "type",
             "origin",
@@ -28,7 +29,7 @@ denmSchema =
             "version": {
                 "type": "string",
                 "description": "json message format version",
-                "default": "0.3.0",
+                "default": "0.4.0",
                 "examples": [
                     "0.1.0",
                     "0.2.0",
@@ -63,14 +64,19 @@ denmSchema =
                         "description": "version of the ITS message and/or communication protocol",
                         "minimum": 0,
                         "maximum": 255,
-                        "examples": [1]
+                        "examples": [
+                            1
+                        ]
                     },
                     "station_id": {
                         "type": "integer",
                         "description": "identifier for an ITS-S",
                         "minimum": 0,
                         "maximum": 4294967295,
-                        "examples": [1]
+                        "examples": [
+                            1,
+                            42,
+                        ]
                     },
                     "management_container": {
                         "type": "object",
@@ -106,15 +112,15 @@ denmSchema =
                             },
                             "detection_time": {
                                 "type": "integer",
-                                "description": "Unit: millisecond since ETSI epoch (2004/01/01). Time at which the event is detected by the originating ITS-S. For the DENM repetition, this DE shall remain unchanged.",
-                                "minimum": 473428800000,
-                                "maximum": 1136073600000
+                                "description": "Unit: millisecond since ETSI epoch (2004/01/01, so 1072915200000). Time at which the event is detected by the originating ITS-S. For the DENM repetition, this DE shall remain unchanged. utcStartOf2004(0), oneMillisecAfterUTCStartOf2004(1)",
+                                "minimum": 0,
+                                "maximum": 4398046511103
                             },
                             "reference_time": {
                                 "type": "integer",
-                                "description": "Unit: millisecond since ETSI epoch (2004/01/01). Time at which a new DENM, an update DENM or a cancellation DENM is generated.",
-                                "minimum": 473428800000,
-                                "maximum": 1136073600000
+                                "description": "Unit: millisecond since ETSI epoch (2004/01/01, so 1072915200000). Time at which a new DENM, an update DENM or a cancellation DENM is generated. utcStartOf2004(0), oneMillisecAfterUTCStartOf2004(1)",
+                                "minimum": 0,
+                                "maximum": 4398046511103
                             },
                             "termination": {
                                 "type": "integer",
@@ -345,7 +351,7 @@ denmSchema =
                     "location_container": {
                         "type": "object",
                         "required": [
-                            // "traces",
+                            "traces",
                         ],
                         "properties": {
                             "event_speed": {
@@ -362,52 +368,66 @@ denmSchema =
                             },
                             "traces": {
                                 "type": "array",
+                                "description": "the traces, 1 or more path history",
+                                "minItems": 1,
+                                "maxItems": 7,
                                 "items": {
-                                    "type": "array",
-                                    "items": {
-                                        "type": "object",
-                                        "required": [
-                                            // "path_position",
-                                        ],
-                                        "properties": {
-                                            "path_position": {
+                                    "type": "object",
+                                    "required": [
+                                        "path_history",
+                                    ],
+                                    "properties": {
+                                        "path_history": {
+                                            "type": "array",
+                                            "description": "the path history, a path with a set of path points",
+                                            "maxItems": 40,
+                                            "items": {
                                                 "type": "object",
                                                 "required": [
-                                                    // "delta_latitude", if not provided, "delta_latitude" = 131072 (unavailable)
-                                                    // "delta_longitude", if not provided, "delta_longitude" = 131072 (unavailable)
-                                                    // "delta_altitude", if not provided, "delta_altitude" = 12800 (unavailable)
+                                                    "path_position",
                                                 ],
                                                 "properties": {
-                                                    "delta_latitude": {
-                                                        "type": "integer",
-                                                        "description": "oneMicrodegreeNorth (10), oneMicrodegreeSouth (-10) , unavailable(131072)",
-                                                        "default": 131072,
-                                                        "minimum": -131071,
-                                                        "maximum": 131072
+                                                    "path_position": {
+                                                        "type": "object",
+                                                        "description": "offset position of a detected event point with regards to the previous detected event point (event_position).",
+                                                        "required": [
+                                                            // "delta_latitude", if not provided, "delta_latitude" = 131072 (unavailable)
+                                                            // "delta_longitude", if not provided, "delta_longitude" = 131072 (unavailable)
+                                                            // "delta_altitude", if not provided, "delta_altitude" = 12800 (unavailable)
+                                                        ],
+                                                        "properties": {
+                                                            "delta_latitude": {
+                                                                "type": "integer",
+                                                                "description": "oneMicrodegreeNorth (10), oneMicrodegreeSouth (-10) , unavailable(131072)",
+                                                                "default": 131072,
+                                                                "minimum": -131071,
+                                                                "maximum": 131072
+                                                            },
+                                                            "delta_longitude": {
+                                                                "type": "integer",
+                                                                "description": "oneMicrodegreeEast (10), oneMicrodegreeWest (-10), unavailable(131072)",
+                                                                "default": 131072,
+                                                                "minimum": -131071,
+                                                                "maximum": 131072
+                                                            },
+                                                            "delta_altitude": {
+                                                                "type": "integer",
+                                                                "description": "oneCentimeterUp (1), oneCentimeterDown (-1), unavailable(12800)",
+                                                                "default": 12800,
+                                                                "minimum": -12700,
+                                                                "maximum": 12800
+                                                            },
+                                                        },
                                                     },
-                                                    "delta_longitude": {
+                                                    "path_delta_time": {
                                                         "type": "integer",
-                                                        "description": "oneMicrodegreeEast (10), oneMicrodegreeWest (-10), unavailable(131072)",
-                                                        "default": 131072,
-                                                        "minimum": -131071,
-                                                        "maximum": 131072
-                                                    },
-                                                    "delta_altitude": {
-                                                        "type": "integer",
-                                                        "description": "oneCentimeterUp (1), oneCentimeterDown (-1), unavailable(12800)",
-                                                        "default": 12800,
-                                                        "minimum": -12700,
-                                                        "maximum": 12800
+                                                        "description": "time travelled by the detecting ITS-S since the previous detected event point (reference_time). tenMilliSecondsInPast(1)",
+                                                        "minimum": 1,
+                                                        "maximum": 65535
                                                     },
                                                 },
-                                            },
-                                            "path_delta_time": {
-                                                "type": "integer",
-                                                "description": "tenMilliSecondsInPast(1)",
-                                                "minimum": 1,
-                                                "maximum": 65535
-                                            },
-                                        },
+                                            }
+                                        }
                                     }
                                 }
                             },
@@ -447,7 +467,7 @@ denmSchema =
                             },
                             "positioning_solution": {
                                 "type": "integer",
-                                "description": "noPositioningSolution(0), sGNSS(1), dGNSS(2), sGNSSplusDR(3), dGNSSplusDR(4), dR(5), ...",
+                                "description": "noPositioningSolution(0), sGNSS(1), dGNSS(2), sGNSSplusDR(3), dGNSSplusDR(4), dR(5)",
                                 "minimum": 0,
                             }
                         }
