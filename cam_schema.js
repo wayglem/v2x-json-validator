@@ -29,7 +29,7 @@ camSchema =
             "version": {
                 "type": "string",
                 "description": "json message format version",
-                "default": "0.4.0",
+                "default": "1.0.0",
                 "examples": [
                     "0.0.1",
                     "0.2.0",
@@ -58,7 +58,7 @@ camSchema =
                 "required": [
                     "protocol_version",
                     "station_id",
-                    "generation_delta",
+                    "generation_delta_time",
                     "basic_container",
                     "high_frequency_container",
                 ],
