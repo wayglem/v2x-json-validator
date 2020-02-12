@@ -1,13 +1,13 @@
 {
   "type": "cam",
   "origin": "self",
-  "version": "0.4.0",
+  "version": "1.0.0",
   "source_uuid": "uuid14",
   "timestamp": 1574778515424,
   "message": {
     "protocol_version": 1,
     "station_id": 42,
-    "generation_delta": 3,
+    "generation_delta_time": 3,
     "basic_container": {
       "reference_position": {
         "latitude": 486263556,
