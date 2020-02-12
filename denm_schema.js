@@ -29,7 +29,7 @@ denmSchema =
             "version": {
                 "type": "string",
                 "description": "json message format version",
-                "default": "0.4.0",
+                "default": "1.0.0",
                 "examples": [
                     "0.1.0",
                     "0.2.0",
