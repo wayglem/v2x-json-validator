@@ -19,6 +19,7 @@
         "longitude": 224921234,
         "altitude": 20000
       },
+      "validity_duration": 600,
       "station_type": 5,
       "confidence": {
         "position_confidence_ellipse": {
