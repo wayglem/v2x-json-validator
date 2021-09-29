@@ -4,7 +4,7 @@
   "description": "validate json DENM and CAM",
   "main": "index.js",
   "dependencies": {
-    "jsoneditor": "^7.2.1"
+    "jsoneditor": "^9.5.6"
   },
   "author": "Elias Salam <elias.salam@orange.com>",
   "license": "Apache-2.0"
